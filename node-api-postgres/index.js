@@ -1,18 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-
 const app = express()
-const { Pool } = require('pg')
-const port = 3000
-
-const pool = new Pool({//client
-  user: 'me',
-  host: 'localhost', //remote server
-  database: 'api',
-  password: 'password',
-  port: 5432,//remote server port
-},
-);
+const db = require('./queries')
+const port = 3001
 
 app.use(bodyParser.json())
 app.use(
@@ -21,46 +11,37 @@ app.use(
   })
 )
 
+app.use((req, res, next) => {
+    const error = new Error('Something went wrong');
+    next(error);
+});
+// Error-handling Middleware
+app.use((err, req, res, next) => {
+    console.error('Error:', err.message);
+    res.status(500).send('Internal Server Error');
+});
+
 app.get('/', (request, response) => {
-
-  getUsers(request, response)
-  //getUserById(request, response)
-    //response.json({ info: 'Node.js, Express, and Postgres API' })
-  })
-
-app.listen(3000, () => {
-console.log(`App running on port ${port}.`)
+  response.json({ info: 'Node.js, Express, and Postgres API' })
 })
 
-app.get('/test', (request, response) => {
-  
-    response.json({ info: 'here is test'})
-  })
-
-
-console.log(555)
-
-
-
-console.log(1111)
-
-const getUsers = (request, response) => {
-  pool.query('SELECT * FROM users ORDER BY id ASC',
-   (error, results) => {
-    if (error) {
-      throw error
+app.get('/users', [
+    // add validation rules
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
     }
-    response.status(200).json(results.rows)
-   })
-}
+    db.getUsers
+});
 
-const getUserById = (request, response) => {
-  const id = parseInt(request.params.id)
 
-  pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).json(results.rows)
-  })
-}
+
+app.get('/users/:id', db.getUserById)
+app.post('/users', db.createUser)
+app.put('/users/:id', db.updateUser)
+app.delete('/users/:id', db.deleteUser)
+
+app.listen(port, () => {
+  console.log(`App running on port ${port}.`)
+})
