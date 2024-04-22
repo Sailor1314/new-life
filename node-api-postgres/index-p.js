@@ -3,7 +3,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const { Pool } = require('pg')
-const { response } = require('express')
+const { response, request } = require('express')
 const port = 3001
 
 const pool = new Pool({//client
@@ -24,18 +24,50 @@ app.use(
 
 app.get('/', (request, response) => {
 
-  //getUsers(request, response)
+  getUsers(request, response)
 
-  response.send('<h1>Form</h1>'+
+  // response.send('<h1 style="color: red;">Form</h1>'+
+  // "<form method='post' action='/users'>" +
+  // "Name:<input name='name'/> <br>" +
+  // "email:<input name='email'/> <br>"+
+  // "<input type='submit' name='submit'/>"+
+  // "</form>")
+ });
+
+  // getUserById( { params: { id: 1 }}, response);
+  //   response.json({ info: 'Node.js, Express, and Postgres API' })
+ app.get('/users', (request, response) => {
+  response.send('<h1 style="color: red;">AddForm</h1>'+
   "<form method='post' action='/users'>" +
-  "Name:<input name='name'/>"+
-  "email:<input name='email'/>"+
+  "Name:<input name='name'/> <br>" +
+  "email:<input name='email'/> <br>"+
   "<input type='submit' name='submit'/>"+
-  "</form>"
-  );
-  //getUserById( { params: { id: 1 }}, response);
-    //response.json({ info: 'Node.js, Express, and Postgres API' })
-  })
+  "</form>")
+ });
+
+
+//  app.get('/updateusers', (request, response) => {
+
+//   getUsers(request, response)
+// });
+
+app.get('/updateusers', (request, response) => {
+  response.send('<h1 style="color: red;">UpdateForm</h1>'+
+  "<form method='post' action='/updateusers'>" +
+  "Id:<input name='id'/> <br>" +
+  "Name:<input name='name'/> <br>" +
+  "Email:<input name='email'/> <br>"+
+  "<button type='submit' name='update'/>Update</button>"+
+  "</form>")
+ });
+
+ app.get('/deleteusers', (request, response) => {
+  response.send('<h1 style="color: red;">DeleteForm</h1>'+
+  "<form method='post' action='/deleteusers'>" +
+  "Id:<input name='id'/> <br>" +
+  "<button type='submit' name='delete'/>Delete</button>"+
+  "</form>")
+ });
 
 
 app.listen(port, () => {
@@ -55,10 +87,11 @@ console.log(request.body)
   createUser(request.body.name, request.body.email, response)
 })
 app.post('/updateusers', ( request, response) => {
+  console.log(request.body)
   updateUser(request, response)
   })
 
-app.get('/deleteusers', ( request, response) => {
+app.post('/deleteusers', ( request, response) => {
   deleteUser(request, response)
   })
   
@@ -117,12 +150,13 @@ const updateUser = (request, response) => {
 }
 
 const deleteUser = (request, response) => {
-  const id = parseInt(request.query.id)
+  const id = request.body.id
 
   pool.query('DELETE FROM users WHERE id = $1', [id], (error, results) => {
     if (error) {
       throw error
     }
-    response.status(200).send(`User deleted with ID: ${id}`)
+    // response.status(200).send('/',`User deleted with ID: ${id}`)
+    response.redirect('/deleteusers');
   })
 }
