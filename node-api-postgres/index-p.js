@@ -1,3 +1,4 @@
+
 const db = require('./queries')
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -37,7 +38,8 @@ app.get('/', (request, response) => {
   // getUserById( { params: { id: 1 }}, response);
   //   response.json({ info: 'Node.js, Express, and Postgres API' })
  app.get('/users', (request, response) => {
-  response.send('<h1 style="color: red;">AddForm</h1>'+
+  response.send("<head> <link rel='stylesheet' type='text/css' href='./styles.css'></head>" +
+  '<h2>AddForm</h2>'+
   "<form method='post' action='/users'>" +
   "Name:<input name='name'/> <br>" +
   "email:<input name='email'/> <br>"+
@@ -52,7 +54,8 @@ app.get('/', (request, response) => {
 // });
 
 app.get('/updateusers', (request, response) => {
-  response.send('<h1 style="color: red;">UpdateForm</h1>'+
+  response.send("<head> <link rel='stylesheet' type='text/css' href='./styles.css'></head>" + 
+  '<h2>UpdateForm</h2>'+
   "<form method='post' action='/updateusers'>" +
   "Id:<input name='id'/> <br>" +
   "Name:<input name='name'/> <br>" +
@@ -62,7 +65,8 @@ app.get('/updateusers', (request, response) => {
  });
 
  app.get('/deleteusers', (request, response) => {
-  response.send('<h1 style="color: red;">DeleteForm</h1>'+
+  response.send("<head> <link rel='stylesheet' type='text/css' href='./styles.css'></head>" +
+    '<h2>DeleteForm</h2>'+
   "<form method='post' action='/deleteusers'>" +
   "Id:<input name='id'/> <br>" +
   "<button type='submit' name='delete'/>Delete</button>"+
