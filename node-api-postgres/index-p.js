@@ -1,5 +1,6 @@
 
 const db = require('./queries')
+const fs = require('fs');
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
@@ -43,11 +44,21 @@ app.get('/', (request, response) => {
   "<form method='post' action='/users'>" +
   "Name:<input name='name'/> <br>" +
   "email:<input name='email'/> <br>"+
-  "<input type='submit' name='submit'/>"+
+  "<button type='submit' name='submit'/>Submit</button>"+
   "</form>")
  });
 
-
+ app.get('/styles.css', (request, response) => {
+  //response.send("1111")
+  fs.readFile('styles.css', 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading file:', err);
+      return;
+    }
+    response.send( data )
+    console.log('File content:', data);
+  });
+})
 //  app.get('/updateusers', (request, response) => {
 
 //   getUsers(request, response)
@@ -86,10 +97,10 @@ app.get('/test', (request, response) => {
 console.log(555)
 
 
-app.post('/users', ( request, response) => {
-console.log(request.body)
-  createUser(request.body.name, request.body.email, response)
-})
+// app.get('/users', ( request, response) => {
+// console.log(request.body)
+//   createUser(request.body.name, request.body.email, response)
+// })
 app.post('/updateusers', ( request, response) => {
   console.log(request.body)
   updateUser(request, response)
