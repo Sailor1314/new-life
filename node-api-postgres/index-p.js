@@ -1,4 +1,3 @@
-
 const db = require('./queries')
 const fs = require('fs');
 const express = require('express')
@@ -97,10 +96,10 @@ app.get('/test', (request, response) => {
 console.log(555)
 
 
-// app.get('/users', ( request, response) => {
-// console.log(request.body)
-//   createUser(request.body.name, request.body.email, response)
-// })
+app.post('/users', ( request, response) => {
+console.log(request.body)
+  createUser(request.body.name, request.body.email, response)
+})
 app.post('/updateusers', ( request, response) => {
   console.log(request.body)
   updateUser(request, response)
