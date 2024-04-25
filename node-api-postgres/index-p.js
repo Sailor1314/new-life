@@ -1,3 +1,95 @@
+// const db = require('./queries')
+// const fs = require('fs');
+// const express = require('express')
+// const bodyParser = require('body-parser')
+// const app = express()
+// const { Pool } = require('pg')
+// const { response, request } = require('express')
+// const port = 3001
+
+// const pool = new Pool({//client
+//   user: 'me',
+//   host: 'localhost', //remote server
+//   database: 'api',
+//   password: 'password',
+//   port: 5432,//remote server port
+// },
+// );
+
+// app.use(bodyParser.json())
+// app.use(
+//   bodyParser.urlencoded({
+//     extended: true,
+//   })
+// )
+
+// app.listen(port, () => {
+//   console.log(`App running on port ${port}.`)
+//   })
+
+// app.get('/', (request, response) =>{
+//   console.log(111)
+  
+//   getUsers(request, response)
+// });
+
+// const getUsers = (request, response) => {
+//   pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
+//     if (error) {
+//       throw error
+//     }
+//     response.status(200).json(results.rows)
+//   })
+// }
+
+// app.get('/test', (request,response) => {
+//   getUserById ({ params:{ id:1 } }, response)
+// })
+// console.log(222)
+
+// const getUserById = (request, response) => {
+//   const id = parseInt(request.params.id)
+//   console.log(333)
+//   pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
+//     if (error) {
+//       throw error
+//     }
+//     response.status(200).json(results.rows)
+//   })
+// }
+// const getUserById = (request, response) => {
+//   const id = parseInt(request.params.id)
+
+//   pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
+//     if (error) {
+//       throw error
+//     }
+//     response.status(200).json(results.rows)
+//   })
+// }
+
+// app.get('/test', (request, response) => {
+//   getUserById( { params: { id: 1 }}, response);
+  
+//     //response.json({ info: 'here is test'})
+//   });
+// console.log(555)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const db = require('./queries')
 const fs = require('fs');
 const express = require('express')
@@ -22,6 +114,10 @@ app.use(
     extended: true,
   })
 )
+
+app.listen(port, () => {
+  console.log(`App running on port ${port}.`)
+  })
 
 app.get('/', (request, response) => {
 
@@ -84,12 +180,10 @@ app.get('/updateusers', (request, response) => {
  });
 
 
-app.listen(port, () => {
-console.log(`App running on port ${port}.`)
-})
+
 
 app.get('/test', (request, response) => {
-  getUserById( { params: { id: 1 }}, response);
+  getUserById( request, response);
   
     //response.json({ info: 'here is test'})
   });
@@ -98,7 +192,7 @@ console.log(555)
 
 app.post('/users', ( request, response) => {
 console.log(request.body)
-  createUser(request.body.name, request.body.email, response)
+  createUser(request, response)
 })
 app.post('/updateusers', ( request, response) => {
   console.log(request.body)
@@ -124,7 +218,7 @@ const getUsers = (request, response) => {
 }
 
 const getUserById = (request, response) => {
-  const id = parseInt(request.params.id)
+  const id = parseInt(request.params.id= 2 )
 
   pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
     if (error) {
@@ -136,8 +230,9 @@ const getUserById = (request, response) => {
 
 
 
-const createUser = (name, email, response) => {
+const createUser = (request, response) => {
   //const { name, email } = {name, email}
+  const { name, email } = request.body
 console.log( name, email )
   pool.query('INSERT INTO users (name, email) VALUES (\'' + name +'\', \'' + email +'\') ', (error, results) => {
     if (error) {
