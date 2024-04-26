@@ -27,12 +27,10 @@
 //   console.log(`App running on port ${port}.`)
 //   })
 
-// app.get('/', (request, response) =>{
-//   console.log(111)
-  
+// app.get('/', (request, response) => {
 //   getUsers(request, response)
-// });
 
+// })
 // const getUsers = (request, response) => {
 //   pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
 //     if (error) {
@@ -42,41 +40,37 @@
 //   })
 // }
 
-// app.get('/test', (request,response) => {
-//   getUserById ({ params:{ id:1 } }, response)
-// })
-// console.log(222)
+// app.get('/deleteusers',(request, response) =>{
+//   response.send("<head> <link rel='stylesheet' type='text/css' href='./styles.css'></head>" +
+//     '<h2>DeleteForm</h2>'+
+//     "<form method='post' action='/deleteusers'>" +
+//     "Id:<input id='id'/> <br>" +
+//     "<button type='submit' name='submit'/>Delete</button>"+
+//     "</form>")
+// });
 
-// const getUserById = (request, response) => {
-//   const id = parseInt(request.params.id)
-//   console.log(333)
-//   pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
+
+
+
+
+// app.post('/deleteusers', (request, response) =>{
+//   deleteUser(request, response)
+// }
+// );
+
+
+
+
+// const deleteUser = (request, response) => {
+//   const id = request.body.id
+//   console.log(id)
+//   pool.query('DELETE FROM users WHERE id = $1', [id], (error, results) => {
 //     if (error) {
 //       throw error
 //     }
-//     response.status(200).json(results.rows)
+//     response.status(200).send(`User deleted with ID: ${id}`);
 //   })
 // }
-// const getUserById = (request, response) => {
-//   const id = parseInt(request.params.id)
-
-//   pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
-//     if (error) {
-//       throw error
-//     }
-//     response.status(200).json(results.rows)
-//   })
-// }
-
-// app.get('/test', (request, response) => {
-//   getUserById( { params: { id: 1 }}, response);
-  
-//     //response.json({ info: 'here is test'})
-//   });
-// console.log(555)
-
-
-
 
 
 
